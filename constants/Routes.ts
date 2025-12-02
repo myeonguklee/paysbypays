@@ -4,9 +4,9 @@ export const ROUTES = {
   PAYMENTS: '/payments',
   // 가맹점
   MERCHANTS: '/merchants',
-} as const
+} as const;
 
 export const ROUTE_LABELS = {
   [ROUTES.PAYMENTS]: '거래 내역',
   [ROUTES.MERCHANTS]: '가맹점',
-} as const
+} as const;

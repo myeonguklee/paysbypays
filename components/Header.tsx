@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import { ROUTES, ROUTE_LABELS } from '@/constants/Routes'
+import Link from 'next/link';
+import { ROUTES, ROUTE_LABELS } from '@/constants/Routes';
 
 export const Header = () => {
   return (
@@ -27,5 +27,5 @@ export const Header = () => {
         </nav>
       </div>
     </header>
-  )
-}
+  );
+};

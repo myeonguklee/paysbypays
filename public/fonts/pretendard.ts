@@ -1,4 +1,4 @@
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
 
 export const Pretendard = localFont({
   src: [
@@ -51,4 +51,4 @@ export const Pretendard = localFont({
   variable: '--font-pretendard',
   display: 'swap',
   preload: true,
-})
+});
