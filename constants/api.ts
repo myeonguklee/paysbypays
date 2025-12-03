@@ -4,7 +4,7 @@ export const API_ENDPOINTS = {
   },
   MERCHANTS: {
     LIST: '/api/v1/merchants/list',
-    ALL_DETAILS: '/api/v1/merchants/details',
+    DETAILS: '/api/v1/merchants/details',
     DETAIL: (mchtCode: string) => `/api/v1/merchants/details/${mchtCode}`,
   },
   COMMON: {
