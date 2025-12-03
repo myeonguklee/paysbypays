@@ -70,8 +70,9 @@ export const DailyStatCard = () => {
 
   return (
     <StatCard title="당일 거래">
-      <p className="text-3xl font-bold">
-        {`${dailyVolume.toLocaleString()}원 (${dailyCount.toLocaleString()}건)`}
+      <p className="flex items-end gap-2 text-3xl font-bold">
+        <span>{`${dailyVolume.toLocaleString()}원`}</span>
+        <span className="text-xl">{`(총 ${dailyCount.toLocaleString()}건)`}</span>
       </p>
 
       <p className="flex items-center gap-2 text-gray-500">
