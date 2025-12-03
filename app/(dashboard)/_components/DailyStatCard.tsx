@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { isSameDay, startOfToday, subDays } from 'date-fns';
 import { paymentList } from '@/app/mock';
 import { ROUTES } from '@/constants/Routes';
+import { convertToKRW } from '@/utils/currency';
 import { StatCard } from './StatCard';
 
 type DailyChange = {
@@ -24,7 +25,7 @@ const calculateDailySummary = () => {
 
   const dailyVolume = todaysPayments.reduce((sum, payment) => {
     if (isCountableStatus(payment.status)) {
-      return sum + Number(payment.amount);
+      return sum + convertToKRW(Number(payment.amount), payment.currency);
     }
     return sum;
   }, 0);
@@ -39,7 +40,11 @@ const calculateDailySummary = () => {
         isSameDay(new Date(payment.paymentAt), yesterday) &&
         isCountableStatus(payment.status)
     )
-    .reduce((sum, payment) => sum + Number(payment.amount), 0);
+    .reduce(
+      (sum, payment) =>
+        sum + convertToKRW(Number(payment.amount), payment.currency),
+      0
+    );
 
   let dailyChange: DailyChange = {
     changeAmount: todayTotalAmount,

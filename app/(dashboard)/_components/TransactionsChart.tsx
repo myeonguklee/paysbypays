@@ -20,6 +20,7 @@ import {
   YAxis,
 } from 'recharts';
 import { paymentList, paymentStatusMap } from '@/app/mock';
+import { convertToKRW } from '@/utils/currency';
 import { FilterButton } from './FilterButton';
 
 type RangeOption = '1w' | '1m' | '3m';
@@ -75,7 +76,7 @@ export const TransactionsChart = () => {
       const target = dailyData[day];
       if (!target) return;
 
-      const amount = parseFloat(p.amount);
+      const amount = convertToKRW(Number(p.amount), p.currency);
 
       if (p.status === 'SUCCESS') {
         target.successAmount += amount;

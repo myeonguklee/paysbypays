@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { paymentList } from '@/app/mock';
 import { ROUTES } from '@/constants/Routes';
+import { convertToKRW } from '@/utils/currency';
 import { StatCard } from './StatCard';
 
 const calculateTotalSummary = () => {
@@ -11,7 +12,8 @@ const calculateTotalSummary = () => {
   );
 
   const totalVolumeAll = successPayments.reduce(
-    (sum, payment) => sum + Number(payment.amount),
+    (sum, payment) =>
+      sum + convertToKRW(Number(payment.amount), payment.currency),
     0
   );
 
