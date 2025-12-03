@@ -89,12 +89,13 @@ export const TransactionsChart = () => {
       }
     });
 
-    const chartData = Object.entries(dailyData)
-      .map(([date, values]) => ({
-        date,
-        ...values,
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const chartData = daysInInterval.map((day) => {
+      const formattedDate = format(day, 'MM-dd');
+      return {
+        date: formattedDate,
+        ...dailyData[formattedDate],
+      };
+    });
 
     const statusKeys =
       metric === 'amount'
