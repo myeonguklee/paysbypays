@@ -1,11 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { EmptyState } from '@/components/EmptyState';
 import { SortIcon } from '@/components/SortIcon';
 import { useGetMerchantStatusQuery } from '@/api/common/queries';
 import { Merchant } from '@/api/merchants/type';
 import { getStatusStyle } from '@/constants/merchants';
 import { SortField, SortOrder } from '@/utils/merchants/sortMerchants';
+import { MerchantDetailModal } from './MerchantDetailModal';
 
 interface MerchantsTableProps {
   data: Merchant[];
@@ -21,6 +23,8 @@ export const MerchantsTable = ({
   onSort,
 }: MerchantsTableProps) => {
   const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
+  const [selectedMchtCode, setSelectedMchtCode] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSort = (field: SortField) => {
     onSort(field);
@@ -33,8 +37,13 @@ export const MerchantsTable = ({
   };
 
   const handleDetailClick = (mchtCode: string) => {
-    // TODO: 상세보기 기능 구현
-    console.log('상세보기:', mchtCode);
+    setSelectedMchtCode(mchtCode);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMchtCode(null);
   };
 
   const handleEditClick = (mchtCode: string) => {
@@ -179,6 +188,15 @@ export const MerchantsTable = ({
           </tbody>
         </table>
       </div>
+
+      {/* 상세보기 모달 */}
+      {selectedMchtCode && (
+        <MerchantDetailModal
+          mchtCode={selectedMchtCode}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

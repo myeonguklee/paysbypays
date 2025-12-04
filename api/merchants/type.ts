@@ -12,6 +12,6 @@ export interface MerchantDetail extends Merchant {
   address: string;
   phone: string;
   email: string;
-  registerAt: string;
-  updateAt: string;
+  registeredAt: string;
+  updatedAt: string;
 }
