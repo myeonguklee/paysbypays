@@ -8,7 +8,7 @@ export const PAYMENT_STATUS_STYLES = {
 } as const;
 
 export const DEFAULT_ITEMS_PER_PAGE = 20;
-export const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50, 100] as const;
+export const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 50, 100] as const;
 
 export const DEFAULT_SORT_FIELD = 'paymentAt';
 export const DEFAULT_SORT_ORDER = 'desc';
