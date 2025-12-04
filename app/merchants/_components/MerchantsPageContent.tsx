@@ -105,7 +105,7 @@ export default function MerchantsPageContent() {
           <button
             type="button"
             onClick={handleAddMerchant}
-            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none sm:text-sm"
             aria-label="가맹점 추가"
           >
             <PlusIcon className="size-4" />
@@ -114,10 +114,10 @@ export default function MerchantsPageContent() {
           <button
             type="button"
             onClick={handleExportToExcel}
-            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none sm:text-sm"
             aria-label="Excel 다운로드"
           >
-            <Download className="h-4 w-4" />
+            <Download className="size-4" />
             Excel 다운로드
           </button>
         </div>
