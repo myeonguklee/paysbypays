@@ -41,7 +41,7 @@ export const PaymentsSearch = ({
           value={localQuery}
           onChange={(e) => setLocalQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="거래코드, 가맹점명으로 검색..."
+          placeholder="가맹점명 또는 거래 코드로 검색"
           className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
           aria-label="거래 내역 검색"
         />
