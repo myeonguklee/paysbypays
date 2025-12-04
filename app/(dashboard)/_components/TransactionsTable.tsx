@@ -2,59 +2,47 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { format } from 'date-fns';
-import { PaymentStatus, PaymentType } from '@/api/type';
-import {
-  merchantsList,
-  paymentList,
-  paymentStatusMap,
-  paymentTypeMap,
-} from '@/app/mock';
+import { Pagination } from '@/components/Pagination';
+import { PaymentAmount } from '@/components/payments/PaymentAmount';
+import { PaymentStatusBadge } from '@/components/payments/PaymentStatusBadge';
+import { usePagination } from '@/hooks/usePagination';
+import { merchantsList, paymentList } from '@/app/mock';
 import { ROUTES } from '@/constants/Routes';
-
-const ITEMS_PER_PAGE = 5;
-
-const statusStyles = {
-  SUCCESS: 'bg-green-100 text-green-800',
-  FAILED: 'bg-red-100 text-red-800',
-  CANCELLED: 'bg-yellow-100 text-yellow-800',
-  PENDING: 'bg-gray-100 text-gray-800',
-} as const;
+import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/payments';
+import { sortPayments } from '@/utils/payments/sortPayments';
+import {
+  createMerchantMap,
+  transformPaymentsData,
+} from '@/utils/payments/transformPaymentData';
 
 export const TransactionsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const mergedData = useMemo(() => {
-    const merchantMap = new Map(
-      merchantsList.map((m) => [m.mchtCode, m.mchtName])
-    );
-    return paymentList
-      .map((p) => ({
-        ...p,
-        mchtName: merchantMap.get(p.mchtCode) || p.mchtCode,
-        paymentAtFormatted: format(
-          new Date(p.paymentAt),
-          'yyyy-MM-dd HH:mm:ss'
-        ),
-        statusKor: paymentStatusMap[p.status as Exclude<PaymentStatus, string>],
-        payTypeKor: paymentTypeMap[p.payType as Exclude<PaymentType, string>],
-      }))
-      .sort(
-        (a, b) =>
-          new Date(b.paymentAt).getTime() - new Date(a.paymentAt).getTime()
-      );
+    const merchantMap = createMerchantMap(merchantsList);
+    const transformed = transformPaymentsData(paymentList, merchantMap);
+    return sortPayments(transformed, 'paymentAt', 'desc');
   }, []);
 
-  const totalPages = Math.ceil(mergedData.length / ITEMS_PER_PAGE);
-  const paginatedData = mergedData.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  // 페이지네이션 계산
+  const { totalPages, startIndex, endIndex } = usePagination({
+    totalItems: mergedData.length,
+    itemsPerPage,
+    currentPage,
+  });
+
+  const paginatedData = mergedData.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleItemsPerPageChange = (value: number) => {
+    setItemsPerPage(value);
+    setCurrentPage(1);
   };
 
   return (
@@ -82,18 +70,14 @@ export const TransactionsTable = () => {
                       {p.paymentAtFormatted}
                     </p>
                   </div>
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs ${
-                      statusStyles[p.status as Exclude<PaymentStatus, string>]
-                    }`}
-                  >
-                    {p.statusKor}
-                  </span>
+                  <PaymentStatusBadge status={p.status} />
                 </div>
                 <div className="mt-2 flex items-center justify-between text-sm">
-                  <span className="text-gray-600">
-                    {Number(p.amount).toLocaleString()} {p.currency}
-                  </span>
+                  <PaymentAmount
+                    amount={p.amount}
+                    currency={p.currency}
+                    className="text-gray-600"
+                  />
                   <span className="text-gray-500">{p.payTypeKor}</span>
                 </div>
               </div>
@@ -129,44 +113,28 @@ export const TransactionsTable = () => {
                   <td className="px-6 py-4">{p.paymentAtFormatted}</td>
                   <td className="px-6 py-4">{p.mchtName}</td>
                   <td className="px-6 py-4">
-                    {Number(p.amount).toLocaleString()} {p.currency}
+                    <PaymentAmount amount={p.amount} currency={p.currency} />
                   </td>
                   <td className="px-6 py-4">{p.payTypeKor}</td>
                   <td className="px-6 py-4">
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs ${
-                        statusStyles[p.status as Exclude<PaymentStatus, string>]
-                      }`}
-                    >
-                      {p.statusKor}
-                    </span>
+                    <PaymentStatusBadge status={p.status} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="my-4 flex items-center justify-center gap-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            aria-label="이전 페이지"
-            className="bg-muted rounded-md px-3 py-1 text-sm disabled:opacity-50"
-          >
-            이전
-          </button>
-          <span className="text-sm">
-            {currentPage} / {totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            aria-label="다음 페이지"
-            className="bg-muted rounded-md px-3 py-1 text-sm disabled:opacity-50"
-          >
-            다음
-          </button>
-        </div>
+      </div>
+      <div className="mt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          totalItems={mergedData.length}
+          itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
       </div>
     </section>
   );
