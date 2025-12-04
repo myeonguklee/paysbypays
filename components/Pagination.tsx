@@ -1,5 +1,7 @@
 'use client';
 
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -99,8 +101,8 @@ export const Pagination = ({
       </div>
 
       {/* 페이지네이션 */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-700">
+      <div className="flex items-center justify-center gap-2">
+        <span className="hidden text-sm text-gray-700 md:block">
           {startItem.toLocaleString()} - {endItem.toLocaleString()} /{' '}
           {totalItems.toLocaleString()}
         </span>
@@ -110,11 +112,11 @@ export const Pagination = ({
             onClick={handlePrevious}
             disabled={currentPage === 1}
             aria-label="이전 페이지"
-            className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-gray-300 bg-white p-1.5 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
             tabIndex={currentPage === 1 ? -1 : 0}
             onKeyDown={(e) => handleKeyDown(e, handlePrevious)}
           >
-            이전
+            <ChevronLeftIcon className="size-4" />
           </button>
 
           <div className="flex items-center gap-1">
@@ -160,11 +162,11 @@ export const Pagination = ({
             onClick={handleNext}
             disabled={currentPage === totalPages}
             aria-label="다음 페이지"
-            className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-gray-300 bg-white p-1.5 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
             tabIndex={currentPage === totalPages ? -1 : 0}
             onKeyDown={(e) => handleKeyDown(e, handleNext)}
           >
-            다음
+            <ChevronRightIcon className="size-4" />
           </button>
         </div>
       </div>
