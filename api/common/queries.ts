@@ -6,7 +6,7 @@ import { CommonResponse } from './type';
 
 function transformToCodeMap<T>(response: ApiResponse<CommonResponse<T>[]>) {
   return Object.fromEntries(
-    response.data.map((item) => [item.type, item.description])
+    response.data.map((item) => [item.code ?? item.type, item.description])
   );
 }
 

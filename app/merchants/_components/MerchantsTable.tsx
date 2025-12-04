@@ -64,7 +64,7 @@ export const MerchantsTable = ({
                 <span
                   className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusStyle(m.status)}`}
                 >
-                  {merchantStatusMap[m.status]}
+                  {merchantStatusMap[m.status] || m.status}
                 </span>
               </div>
               <div className="mt-2 flex items-center justify-between text-sm">
@@ -156,7 +156,7 @@ export const MerchantsTable = ({
                   <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${getStatusStyle(m.status)}`}
                   >
-                    {merchantStatusMap[m.status]}
+                    {merchantStatusMap[m.status] || m.status}
                   </span>
                 </td>
                 <td className="px-6 py-4">

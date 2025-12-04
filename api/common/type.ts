@@ -1,7 +1,8 @@
 import { MerchantStatus, PaymentStatus, PaymentType } from '../type';
 
 export interface CommonResponse<T> {
-  type: T;
+  code?: T;
+  type?: T;
   description: string;
 }
 

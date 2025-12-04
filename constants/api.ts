@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
   },
   COMMON: {
     PAYMENT_STATUS: '/api/v1/common/payment-status/all',
-    PAYMENT_TYPE: '/api/v1/common/payment-type/all',
+    PAYMENT_TYPE: '/api/v1/common/paymemt-type/all',
     MERCHANT_STATUS: '/api/v1/common/mcht-status/all',
   },
 } as const;
