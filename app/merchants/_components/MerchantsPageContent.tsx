@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Download, PlusIcon } from 'lucide-react';
 import { Pagination } from '@/components/Pagination';
 import { useMerchantsData } from '@/hooks/merchants/useMerchantsData';
@@ -10,6 +11,7 @@ import { useGetMerchantsListQuery } from '@/api/merchants/queries';
 import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/merchants';
 import { exportMerchantsToExcel } from '@/utils/merchants/exportToExcel';
 import { SortField } from '@/utils/merchants/sortMerchants';
+import { MerchantCreateModal } from './MerchantCreateModal';
 import { MerchantsFilters } from './MerchantsFilters';
 import { MerchantsSearch } from './MerchantsSearch';
 import { MerchantsTable } from './MerchantsTable';
@@ -17,6 +19,7 @@ import { MerchantsTable } from './MerchantsTable';
 export default function MerchantsPageContent() {
   const { data: merchants = [] } = useGetMerchantsListQuery();
   const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // 필터 상태 관리 (URL 동기화 포함)
   const {
@@ -90,7 +93,11 @@ export default function MerchantsPageContent() {
   };
 
   const handleAddMerchant = () => {
-    console.log('가맹점 추가');
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false);
   };
 
   const handleExportToExcel = () => {
@@ -171,6 +178,12 @@ export default function MerchantsPageContent() {
           onItemsPerPageChange={handleItemsPerPageChange}
         />
       </div>
+
+      {/* 가맹점 추가 모달 */}
+      <MerchantCreateModal
+        isOpen={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { Merchant } from '@/api/merchants/type';
 import { getStatusStyle } from '@/constants/merchants';
 import { SortField, SortOrder } from '@/utils/merchants/sortMerchants';
 import { MerchantDetailModal } from './MerchantDetailModal';
+import { MerchantEditModal } from './MerchantEditModal';
 
 interface MerchantsTableProps {
   data: Merchant[];
@@ -23,8 +24,9 @@ export const MerchantsTable = ({
   onSort,
 }: MerchantsTableProps) => {
   const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
-  const [selectedMchtCode, setSelectedMchtCode] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mchtCode, setMchtCode] = useState<string | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleSort = (field: SortField) => {
     onSort(field);
@@ -37,18 +39,23 @@ export const MerchantsTable = ({
   };
 
   const handleDetailClick = (mchtCode: string) => {
-    setSelectedMchtCode(mchtCode);
-    setIsModalOpen(true);
+    setMchtCode(mchtCode);
+    setIsDetailModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedMchtCode(null);
+    setIsDetailModalOpen(false);
+    setMchtCode(null);
   };
 
   const handleEditClick = (mchtCode: string) => {
-    // TODO: 수정하기 기능 구현
-    console.log('수정하기:', mchtCode);
+    setMchtCode(mchtCode);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setMchtCode(null);
   };
 
   if (data.length === 0) {
@@ -190,11 +197,20 @@ export const MerchantsTable = ({
       </div>
 
       {/* 상세보기 모달 */}
-      {selectedMchtCode && (
+      {isDetailModalOpen && (
         <MerchantDetailModal
-          mchtCode={selectedMchtCode}
-          isOpen={isModalOpen}
+          mchtCode={mchtCode || ''}
+          isOpen={isDetailModalOpen}
           onClose={handleCloseModal}
+        />
+      )}
+
+      {/* 수정 모달 */}
+      {isEditModalOpen && (
+        <MerchantEditModal
+          mchtCode={mchtCode || ''}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
         />
       )}
     </div>
