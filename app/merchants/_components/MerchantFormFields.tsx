@@ -7,7 +7,8 @@ import {
   MerchantCreateFormData,
   MerchantEditFormData,
 } from '@/schemas/merchant';
-import { FormInput, FormReadOnlyField, FormSelect } from './FormField';
+import { FormInput, FormSelect } from './FormField';
+import { ReadOnlyField } from './ReadOnlyField';
 
 interface MerchantFormFieldsProps {
   register: UseFormRegister<MerchantEditFormData | MerchantCreateFormData>;
@@ -54,7 +55,7 @@ export const MerchantFormFields = ({
 
           {/* 가맹점 코드 (읽기 전용) */}
           {mchtCodeValue && (
-            <FormReadOnlyField label="가맹점 코드" value={mchtCodeValue} />
+            <ReadOnlyField label="가맹점 코드" value={mchtCodeValue} />
           )}
 
           {/* 가맹점명 */}

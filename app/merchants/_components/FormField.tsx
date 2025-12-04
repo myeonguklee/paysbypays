@@ -128,17 +128,3 @@ export const FormSelect = <T extends FormDataUnion>({
     </FormField>
   );
 };
-
-interface FormReadOnlyFieldProps {
-  label: string;
-  value: string;
-}
-
-export const FormReadOnlyField = ({ label, value }: FormReadOnlyFieldProps) => {
-  return (
-    <div className="flex flex-row items-center gap-1">
-      <label className="w-32 text-sm font-medium text-gray-500">{label}</label>
-      <span className="flex-1 text-sm text-gray-900">{value}</span>
-    </div>
-  );
-};

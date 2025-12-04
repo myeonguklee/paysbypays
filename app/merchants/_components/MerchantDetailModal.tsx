@@ -4,6 +4,7 @@ import { Modal } from '@/components/Modal';
 import { useGetMerchantStatusQuery } from '@/api/common/queries';
 import { useGetMerchantsDetail } from '@/api/merchants/queries';
 import { getStatusStyle } from '@/constants/merchants';
+import { ReadOnlyField } from './ReadOnlyField';
 
 interface MerchantDetailModalProps {
   mchtCode: string;
@@ -21,7 +22,7 @@ export const MerchantDetailModal = ({
     data: merchantDetail,
     isLoading,
     isError,
-  } = useGetMerchantsDetail(isOpen ? mchtCode : '');
+  } = useGetMerchantsDetail(mchtCode);
 
   const footer = (
     <button
@@ -63,43 +64,23 @@ export const MerchantDetailModal = ({
               기본 정보
             </h3>
             <div className="space-y-3">
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  가맹점명
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.mchtName}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  가맹점 코드
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.mchtCode}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  업종
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.bizType}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  상태
-                </label>
-                <span className="flex-1">
+              <ReadOnlyField label="가맹점명" value={merchantDetail.mchtName} />
+              <ReadOnlyField
+                label="가맹점 코드"
+                value={merchantDetail.mchtCode}
+              />
+              <ReadOnlyField label="업종" value={merchantDetail.bizType} />
+              <ReadOnlyField
+                label="상태"
+                value={
                   <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${getStatusStyle(merchantDetail.status)}`}
                   >
                     {merchantStatusMap[merchantDetail.status] ||
                       merchantDetail.status}
                   </span>
-                </span>
-              </div>
+                }
+              />
             </div>
           </div>
 
@@ -109,38 +90,10 @@ export const MerchantDetailModal = ({
               사업자 정보
             </h3>
             <div className="space-y-3">
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  사업자번호
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.bizNo || '-'}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  주소
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.address || '-'}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  전화번호
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.phone || '-'}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  이메일
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.email || '-'}
-                </span>
-              </div>
+              <ReadOnlyField label="사업자번호" value={merchantDetail.bizNo} />
+              <ReadOnlyField label="주소" value={merchantDetail.address} />
+              <ReadOnlyField label="전화번호" value={merchantDetail.phone} />
+              <ReadOnlyField label="이메일" value={merchantDetail.email} />
             </div>
           </div>
 
@@ -150,28 +103,24 @@ export const MerchantDetailModal = ({
               등록 정보
             </h3>
             <div className="space-y-3">
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  등록일시
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.registeredAt
+              <ReadOnlyField
+                label="등록일시"
+                value={
+                  merchantDetail.registeredAt
                     ? new Date(merchantDetail.registeredAt).toLocaleString(
                         'ko-KR'
                       )
-                    : '-'}
-                </span>
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <label className="w-32 text-sm font-medium text-gray-500">
-                  수정일시
-                </label>
-                <span className="flex-1 text-sm text-gray-900">
-                  {merchantDetail.updatedAt
+                    : null
+                }
+              />
+              <ReadOnlyField
+                label="수정일시"
+                value={
+                  merchantDetail.updatedAt
                     ? new Date(merchantDetail.updatedAt).toLocaleString('ko-KR')
-                    : '-'}
-                </span>
-              </div>
+                    : null
+                }
+              />
             </div>
           </div>
         </div>
