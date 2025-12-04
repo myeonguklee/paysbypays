@@ -41,7 +41,10 @@ export const FailureRateCard = () => {
       <p className="text-gray-500">
         {`전체 ${totalCount.toLocaleString()}건 중 ${failedCount.toLocaleString()}건 실패`}
       </p>
-      <Link href={ROUTES.PAYMENTS} className="self-end text-sm text-gray-500">
+      <Link
+        href={`${ROUTES.PAYMENTS}?status=FAILED`}
+        className="self-end text-sm text-gray-500"
+      >
         상세 보기 &gt;
       </Link>
     </StatCard>
