@@ -1,9 +1,8 @@
 'use client';
 
 import { SortIcon } from '@/components/common/SortIcon';
+import { useGetMerchantStatusQuery } from '@/api/common/queries';
 import { Merchant } from '@/api/merchants/type';
-import { MerchantStatus } from '@/api/type';
-import { merchantStatusMap } from '@/app/mock';
 import { getStatusStyle } from '@/constants/merchants';
 import { SortField, SortOrder } from '@/utils/merchants/sortMerchants';
 
@@ -20,6 +19,8 @@ export const MerchantsTable = ({
   sortOrder,
   onSort,
 }: MerchantsTableProps) => {
+  const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
+
   const handleSort = (field: SortField) => {
     onSort(field);
   };
@@ -63,11 +64,7 @@ export const MerchantsTable = ({
                 <span
                   className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusStyle(m.status)}`}
                 >
-                  {
-                    merchantStatusMap[
-                      m.status as Exclude<MerchantStatus, string>
-                    ]
-                  }
+                  {merchantStatusMap[m.status]}
                 </span>
               </div>
               <div className="mt-2 flex items-center justify-between text-sm">
@@ -159,11 +156,7 @@ export const MerchantsTable = ({
                   <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${getStatusStyle(m.status)}`}
                   >
-                    {
-                      merchantStatusMap[
-                        m.status as Exclude<MerchantStatus, string>
-                      ]
-                    }
+                    {merchantStatusMap[m.status]}
                   </span>
                 </td>
                 <td className="px-6 py-4">

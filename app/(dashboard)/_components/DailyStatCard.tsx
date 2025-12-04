@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { isSameDay, startOfToday, subDays } from 'date-fns';
-import { paymentList } from '@/app/mock';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
+import { Payment } from '@/api/payments/type';
+import { PaymentStatus } from '@/api/type';
 import { ROUTES } from '@/constants/Routes';
 import { convertToKRW } from '@/utils/currency';
 import { StatCard } from './StatCard';
@@ -13,11 +15,11 @@ type DailyChange = {
   isIncrease: boolean;
 };
 
-const calculateDailySummary = () => {
+const calculateDailySummary = (paymentList: Payment[]) => {
   const today = startOfToday();
   const yesterday = subDays(today, 1);
 
-  const isCountableStatus = (status: string) => status === 'SUCCESS';
+  const isCountableStatus = (status: PaymentStatus) => status === 'SUCCESS';
 
   const todaysPayments = paymentList.filter((payment) =>
     isSameDay(new Date(payment.paymentAt), today)
@@ -71,7 +73,9 @@ const calculateDailySummary = () => {
 };
 
 export const DailyStatCard = () => {
-  const { dailyVolume, dailyCount, dailyChange } = calculateDailySummary();
+  const { data: paymentList = [] } = useGetPaymentsListQuery();
+  const { dailyVolume, dailyCount, dailyChange } =
+    calculateDailySummary(paymentList);
 
   return (
     <StatCard title="당일 거래">

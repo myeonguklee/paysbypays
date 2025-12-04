@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { paymentList } from '@/app/mock';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
+import { Payment } from '@/api/payments/type';
 import { ROUTES } from '@/constants/Routes';
 import { StatCard } from './StatCard';
 
-const calculateFailureRate = () => {
+const calculateFailureRate = (paymentList: Payment[]) => {
   const successCount = paymentList.filter(
     (payment) => payment.status === 'SUCCESS'
   ).length;
@@ -33,7 +34,9 @@ const calculateFailureRate = () => {
 };
 
 export const FailureRateCard = () => {
-  const { failureRate, failedCount, totalCount } = calculateFailureRate();
+  const { data: paymentList = [] } = useGetPaymentsListQuery();
+  const { failureRate, failedCount, totalCount } =
+    calculateFailureRate(paymentList);
 
   return (
     <StatCard title="결제 실패율">

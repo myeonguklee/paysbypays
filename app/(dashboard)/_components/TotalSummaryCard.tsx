@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { paymentList } from '@/app/mock';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
+import { Payment } from '@/api/payments/type';
 import { ROUTES } from '@/constants/Routes';
 import { convertToKRW } from '@/utils/currency';
 import { StatCard } from './StatCard';
 
-const calculateTotalSummary = () => {
+const calculateTotalSummary = (paymentList: Payment[]) => {
   const successPayments = paymentList.filter(
     (payment) => payment.status === 'SUCCESS'
   );
@@ -26,7 +27,8 @@ const calculateTotalSummary = () => {
 };
 
 export const TotalSummaryCard = () => {
-  const { totalVolumeAll, totalCountAll } = calculateTotalSummary();
+  const { data: paymentList = [] } = useGetPaymentsListQuery();
+  const { totalVolumeAll, totalCountAll } = calculateTotalSummary(paymentList);
 
   return (
     <StatCard title="전체 누적 거래">

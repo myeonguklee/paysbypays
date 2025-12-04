@@ -5,7 +5,12 @@ import { Pagination } from '@/components/Pagination';
 import { usePaymentsData } from '@/hooks/payments/usePaymentsData';
 import { usePaymentsFilters } from '@/hooks/payments/usePaymentsFilters';
 import { usePagination } from '@/hooks/usePagination';
-import { merchantsList, paymentList } from '@/app/mock';
+import {
+  useGetPaymentStatusQuery,
+  useGetPaymentTypeQuery,
+} from '@/api/common/queries';
+import { useGetMerchantsListQuery } from '@/api/merchants/queries';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
 import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/payments';
 import { exportPaymentsToExcel } from '@/utils/payments/exportToExcel';
 import { SortField } from '@/utils/payments/sortPayments';
@@ -14,9 +19,10 @@ import { PaymentsSearch } from './_components/PaymentsSearch';
 import { PaymentsTable } from './_components/PaymentsTable';
 
 export default function PaymentsPage() {
-  // Mock 데이터 사용
-  const payments = paymentList;
-  const merchants = merchantsList;
+  const { data: payments = [] } = useGetPaymentsListQuery();
+  const { data: merchants = [] } = useGetMerchantsListQuery();
+  const { data: paymentStatusMap = {} } = useGetPaymentStatusQuery();
+  const { data: paymentTypeMap = {} } = useGetPaymentTypeQuery();
 
   // 필터 상태 관리 (URL 동기화 포함)
   const {
@@ -44,6 +50,8 @@ export default function PaymentsPage() {
   const { processedData, currencies } = usePaymentsData({
     payments,
     merchants,
+    paymentStatusMap,
+    paymentTypeMap,
     filters: {
       searchQuery,
       statusFilter,

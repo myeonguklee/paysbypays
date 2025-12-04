@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Merchant } from '@/api/merchants/type';
 import { Payment } from '@/api/payments/type';
+import { PaymentStatus, PaymentType } from '@/api/type';
 import {
   PaymentFilters,
   filterPayments,
@@ -18,6 +19,8 @@ import {
 interface UsePaymentsDataParams {
   payments: Payment[];
   merchants: Merchant[];
+  paymentStatusMap: Record<PaymentStatus, string>;
+  paymentTypeMap: Record<PaymentType, string>;
   filters: PaymentFilters;
   sortField: SortField;
   sortOrder: SortOrder;
@@ -26,6 +29,8 @@ interface UsePaymentsDataParams {
 export const usePaymentsData = ({
   payments,
   merchants,
+  paymentStatusMap,
+  paymentTypeMap,
   filters,
   sortField,
   sortOrder,
@@ -38,7 +43,12 @@ export const usePaymentsData = ({
   // 데이터 변환, 필터링, 정렬
   const processedData = useMemo(() => {
     // 1. 데이터 변환
-    const transformed = transformPaymentsData(payments, merchantMap);
+    const transformed = transformPaymentsData(
+      payments,
+      merchantMap,
+      paymentStatusMap,
+      paymentTypeMap
+    );
 
     // 2. 필터링
     const filtered = filterPayments(transformed, filters);
@@ -47,7 +57,15 @@ export const usePaymentsData = ({
     const sorted = sortPayments(filtered, sortField, sortOrder);
 
     return sorted;
-  }, [payments, merchantMap, filters, sortField, sortOrder]);
+  }, [
+    payments,
+    merchantMap,
+    paymentStatusMap,
+    paymentTypeMap,
+    filters,
+    sortField,
+    sortOrder,
+  ]);
 
   // 통화 목록 추출
   const currencies = useMemo(() => {

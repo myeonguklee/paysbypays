@@ -5,7 +5,8 @@ import { Pagination } from '@/components/Pagination';
 import { useMerchantsData } from '@/hooks/merchants/useMerchantsData';
 import { useMerchantsFilters } from '@/hooks/merchants/useMerchantsFilters';
 import { usePagination } from '@/hooks/usePagination';
-import { merchantsList } from '@/app/mock';
+import { useGetMerchantStatusQuery } from '@/api/common/queries';
+import { useGetMerchantsListQuery } from '@/api/merchants/queries';
 import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/merchants';
 import { exportMerchantsToExcel } from '@/utils/merchants/exportToExcel';
 import { SortField } from '@/utils/merchants/sortMerchants';
@@ -14,8 +15,8 @@ import { MerchantsSearch } from './_components/MerchantsSearch';
 import { MerchantsTable } from './_components/MerchantsTable';
 
 export default function MerchantsPage() {
-  // Mock 데이터 사용
-  const merchants = merchantsList;
+  const { data: merchants = [] } = useGetMerchantsListQuery();
+  const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
 
   // 필터 상태 관리 (URL 동기화 포함)
   const {
@@ -93,7 +94,7 @@ export default function MerchantsPage() {
   };
 
   const handleExportToExcel = () => {
-    exportMerchantsToExcel(processedData, '가맹점목록');
+    exportMerchantsToExcel(processedData, merchantStatusMap, '가맹점목록');
   };
 
   return (

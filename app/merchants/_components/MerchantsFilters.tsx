@@ -1,8 +1,8 @@
 'use client';
 
+import { useGetMerchantStatusQuery } from '@/api/common/queries';
 import { Merchant } from '@/api/merchants/type';
 import { MerchantStatus } from '@/api/type';
-import { merchantStatusMap } from '@/app/mock';
 
 interface MerchantsFiltersProps {
   statusFilter: MerchantStatus | 'ALL';
@@ -25,13 +25,15 @@ export const MerchantsFilters = ({
   onBizTypeFilterChange,
   onMchtCodeFilterChange,
 }: MerchantsFiltersProps) => {
+  const { data: merchantStatusMap = {} } = useGetMerchantStatusQuery();
+
   const statusOptions: Array<{ value: MerchantStatus | 'ALL'; label: string }> =
     [
       { value: 'ALL', label: '전체' },
-      { value: 'READY', label: merchantStatusMap.READY },
-      { value: 'ACTIVE', label: merchantStatusMap.ACTIVE },
-      { value: 'INACTIVE', label: merchantStatusMap.INACTIVE },
-      { value: 'CLOSED', label: merchantStatusMap.CLOSED },
+      { value: 'READY', label: merchantStatusMap.READY || '대기' },
+      { value: 'ACTIVE', label: merchantStatusMap.ACTIVE || '활성' },
+      { value: 'INACTIVE', label: merchantStatusMap.INACTIVE || '중지' },
+      { value: 'CLOSED', label: merchantStatusMap.CLOSED || '폐기' },
     ];
 
   return (

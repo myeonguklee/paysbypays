@@ -2,7 +2,6 @@ import { format } from 'date-fns';
 import { Merchant } from '@/api/merchants/type';
 import { Payment } from '@/api/payments/type';
 import { PaymentStatus, PaymentType } from '@/api/type';
-import { paymentStatusMap, paymentTypeMap } from '@/app/mock';
 
 export interface ProcessedPayment {
   paymentCode: string;
@@ -32,7 +31,9 @@ export const createMerchantMap = (
  */
 export const transformPaymentData = (
   payment: Payment,
-  merchantMap: Map<string, string>
+  merchantMap: Map<PaymentStatus, string>,
+  paymentStatusMap: Record<PaymentStatus, string>,
+  paymentTypeMap: Record<PaymentType, string>
 ): ProcessedPayment => {
   return {
     ...payment,
@@ -41,9 +42,8 @@ export const transformPaymentData = (
       new Date(payment.paymentAt),
       'yyyy-MM-dd HH:mm:ss'
     ),
-    statusKor:
-      paymentStatusMap[payment.status as Exclude<PaymentStatus, string>],
-    payTypeKor: paymentTypeMap[payment.payType as Exclude<PaymentType, string>],
+    statusKor: paymentStatusMap[payment.status] || payment.status,
+    payTypeKor: paymentTypeMap[payment.payType] || payment.payType,
   };
 };
 
@@ -52,7 +52,11 @@ export const transformPaymentData = (
  */
 export const transformPaymentsData = (
   payments: Payment[],
-  merchantMap: Map<string, string>
+  merchantMap: Map<PaymentStatus, string>,
+  paymentStatusMap: Record<PaymentStatus, string>,
+  paymentTypeMap: Record<PaymentType, string>
 ): ProcessedPayment[] => {
-  return payments.map((p) => transformPaymentData(p, merchantMap));
+  return payments.map((p) =>
+    transformPaymentData(p, merchantMap, paymentStatusMap, paymentTypeMap)
+  );
 };

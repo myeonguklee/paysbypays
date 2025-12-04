@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { merchantsList } from '@/app/mock';
+import { useGetMerchantsListQuery } from '@/api/merchants/queries';
+import { Merchant } from '@/api/merchants/type';
 import { ROUTES } from '@/constants/Routes';
 import { StatCard } from './StatCard';
 
@@ -11,7 +12,9 @@ type ActiveMerchantStats = {
   activeRate: number;
 };
 
-const calculateActiveMerchantStats = (): ActiveMerchantStats => {
+const calculateActiveMerchantStats = (
+  merchantsList: Merchant[]
+): ActiveMerchantStats => {
   const totalMerchants = merchantsList.length;
   const activeMerchants = merchantsList.filter(
     (merchant) => merchant.status === 'ACTIVE'
@@ -35,7 +38,8 @@ const calculateActiveMerchantStats = (): ActiveMerchantStats => {
 };
 
 export const ActiveMerchantCard = () => {
-  const activeMerchantStats = calculateActiveMerchantStats();
+  const { data: merchantsList = [] } = useGetMerchantsListQuery();
+  const activeMerchantStats = calculateActiveMerchantStats(merchantsList);
 
   return (
     <StatCard title="활성 가맹점">

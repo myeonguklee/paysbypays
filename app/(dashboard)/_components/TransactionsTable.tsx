@@ -6,7 +6,12 @@ import { Pagination } from '@/components/Pagination';
 import { PaymentAmount } from '@/components/payments/PaymentAmount';
 import { PaymentStatusBadge } from '@/components/payments/PaymentStatusBadge';
 import { usePagination } from '@/hooks/usePagination';
-import { merchantsList, paymentList } from '@/app/mock';
+import {
+  useGetPaymentStatusQuery,
+  useGetPaymentTypeQuery,
+} from '@/api/common/queries';
+import { useGetMerchantsListQuery } from '@/api/merchants/queries';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
 import { ROUTES } from '@/constants/Routes';
 import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/payments';
 import { sortPayments } from '@/utils/payments/sortPayments';
@@ -18,12 +23,21 @@ import {
 export const TransactionsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const { data: paymentList = [] } = useGetPaymentsListQuery();
+  const { data: merchantsList = [] } = useGetMerchantsListQuery();
+  const { data: paymentStatusMap = {} } = useGetPaymentStatusQuery();
+  const { data: paymentTypeMap = {} } = useGetPaymentTypeQuery();
 
   const mergedData = useMemo(() => {
     const merchantMap = createMerchantMap(merchantsList);
-    const transformed = transformPaymentsData(paymentList, merchantMap);
+    const transformed = transformPaymentsData(
+      paymentList,
+      merchantMap,
+      paymentStatusMap,
+      paymentTypeMap
+    );
     return sortPayments(transformed, 'paymentAt', 'desc');
-  }, []);
+  }, [paymentList, merchantsList, paymentStatusMap, paymentTypeMap]);
 
   // 페이지네이션 계산
   const { totalPages, startIndex, endIndex } = usePagination({

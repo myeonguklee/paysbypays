@@ -1,13 +1,13 @@
 import * as XLSX from 'xlsx';
 import { Merchant } from '@/api/merchants/type';
 import { MerchantStatus } from '@/api/type';
-import { merchantStatusMap } from '@/app/mock';
 
 /**
  * 가맹점 데이터를 Excel 파일로 다운로드
  */
 export const exportMerchantsToExcel = (
   data: Merchant[],
+  merchantStatusMap: Record<MerchantStatus, string>,
   filename: string = '가맹점목록'
 ): void => {
   // Excel 시트에 표시할 데이터 변환

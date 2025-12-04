@@ -1,8 +1,11 @@
 'use client';
 
+import {
+  useGetPaymentStatusQuery,
+  useGetPaymentTypeQuery,
+} from '@/api/common/queries';
 import { Merchant } from '@/api/merchants/type';
 import { PaymentStatus, PaymentType } from '@/api/type';
-import { paymentStatusMap, paymentTypeMap } from '@/app/mock';
 
 interface PaymentsFiltersProps {
   statusFilter: PaymentStatus | 'ALL';
@@ -29,22 +32,25 @@ export const PaymentsFilters = ({
   onMchtCodeFilterChange,
   onCurrencyFilterChange,
 }: PaymentsFiltersProps) => {
+  const { data: paymentStatusMap = {} } = useGetPaymentStatusQuery();
+  const { data: paymentTypeMap = {} } = useGetPaymentTypeQuery();
+
   const statusOptions: Array<{ value: PaymentStatus | 'ALL'; label: string }> =
     [
       { value: 'ALL', label: '전체' },
-      { value: 'SUCCESS', label: paymentStatusMap.SUCCESS },
-      { value: 'FAILED', label: paymentStatusMap.FAILED },
-      { value: 'CANCELLED', label: paymentStatusMap.CANCELLED },
-      { value: 'PENDING', label: paymentStatusMap.PENDING },
+      { value: 'SUCCESS', label: paymentStatusMap.SUCCESS || '결제 완료' },
+      { value: 'FAILED', label: paymentStatusMap.FAILED || '결제 실패' },
+      { value: 'CANCELLED', label: paymentStatusMap.CANCELLED || '환불 완료' },
+      { value: 'PENDING', label: paymentStatusMap.PENDING || '결제 대기' },
     ];
 
   const payTypeOptions: Array<{ value: PaymentType | 'ALL'; label: string }> = [
     { value: 'ALL', label: '전체' },
-    { value: 'ONLINE', label: paymentTypeMap.ONLINE },
-    { value: 'DEVICE', label: paymentTypeMap.DEVICE },
-    { value: 'MOBILE', label: paymentTypeMap.MOBILE },
-    { value: 'VACT', label: paymentTypeMap.VACT },
-    { value: 'BILLING', label: paymentTypeMap.BILLING },
+    { value: 'ONLINE', label: paymentTypeMap.ONLINE || '온라인' },
+    { value: 'DEVICE', label: paymentTypeMap.DEVICE || '단말기' },
+    { value: 'MOBILE', label: paymentTypeMap.MOBILE || '모바일' },
+    { value: 'VACT', label: paymentTypeMap.VACT || '가상계좌' },
+    { value: 'BILLING', label: paymentTypeMap.BILLING || '정기결제' },
   ];
 
   return (

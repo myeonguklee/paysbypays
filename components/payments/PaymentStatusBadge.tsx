@@ -1,5 +1,7 @@
+'use client';
+
+import { useGetPaymentStatusQuery } from '@/api/common/queries';
 import { PaymentStatus } from '@/api/type';
-import { paymentStatusMap } from '@/app/mock';
 import { getStatusStyle } from '@/constants/payments';
 
 interface PaymentStatusBadgeProps {
@@ -11,7 +13,8 @@ export const PaymentStatusBadge = ({
   status,
   className = '',
 }: PaymentStatusBadgeProps) => {
-  const statusKor = paymentStatusMap[status as Exclude<PaymentStatus, string>];
+  const { data: paymentStatusMap = {} } = useGetPaymentStatusQuery();
+  const statusKor = paymentStatusMap[status] || status;
   const statusStyle = getStatusStyle(status);
 
   return (

@@ -19,7 +19,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { paymentList, paymentStatusMap } from '@/app/mock';
+import { useGetPaymentStatusQuery } from '@/api/common/queries';
+import { useGetPaymentsListQuery } from '@/api/payments/queries';
 import { convertToKRW } from '@/utils/currency';
 import { FilterButton } from './FilterButton';
 
@@ -35,6 +36,8 @@ const rangeDays = {
 export const TransactionsChart = () => {
   const [range, setRange] = useState<RangeOption>('1m');
   const [metric, setMetric] = useState<MetricType>('amount');
+  const { data: paymentList = [] } = useGetPaymentsListQuery();
+  const { data: paymentStatusMap = {} } = useGetPaymentStatusQuery();
 
   const { data, yMax } = useMemo(() => {
     const endDate = new Date();
@@ -119,7 +122,7 @@ export const TransactionsChart = () => {
       data: chartData,
       yMax: calculatedYMax,
     };
-  }, [range, metric]);
+  }, [range, metric, paymentList]);
 
   const successDataKey = metric === 'amount' ? 'successAmount' : 'successCount';
   const cancelledDataKey =
@@ -187,7 +190,7 @@ export const TransactionsChart = () => {
               type="linear"
               dataKey={successDataKey}
               stroke="#0064FF"
-              name={paymentStatusMap.SUCCESS}
+              name={paymentStatusMap.SUCCESS || '결제 완료'}
               dot={false}
               strokeWidth={2}
             />
@@ -195,7 +198,7 @@ export const TransactionsChart = () => {
               type="linear"
               dataKey={cancelledDataKey}
               stroke="#FF6B35"
-              name={paymentStatusMap.CANCELLED}
+              name={paymentStatusMap.CANCELLED || '환불 완료'}
               dot={false}
               strokeWidth={2}
             />
@@ -203,7 +206,7 @@ export const TransactionsChart = () => {
               type="linear"
               dataKey={failedDataKey}
               stroke="#6B7280"
-              name={paymentStatusMap.FAILED}
+              name={paymentStatusMap.FAILED || '결제 실패'}
               dot={false}
               strokeWidth={2}
             />
