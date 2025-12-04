@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { EmptyState } from '@/components/EmptyState';
 import { Pagination } from '@/components/Pagination';
 import { PaymentAmount } from '@/components/payments/PaymentAmount';
 import { PaymentStatusBadge } from '@/components/payments/PaymentStatusBadge';
@@ -47,6 +48,25 @@ export const TransactionsTable = () => {
   });
 
   const paginatedData = mergedData.slice(startIndex, endIndex);
+
+  if (mergedData.length === 0) {
+    return (
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-muted-foreground text-lg font-medium">
+            거래 내역
+          </h3>
+          <Link
+            href={ROUTES.PAYMENTS}
+            className="relative top-2 text-sm text-gray-500"
+          >
+            상세 보기 &gt;
+          </Link>
+        </div>
+        <EmptyState message="거래 내역이 없습니다." />
+      </section>
+    );
+  }
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {

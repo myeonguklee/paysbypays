@@ -1,6 +1,7 @@
 'use client';
 
-import { SortIcon } from '@/components/common/SortIcon';
+import { EmptyState } from '@/components/EmptyState';
+import { SortIcon } from '@/components/SortIcon';
 import { PaymentAmount } from '@/components/payments/PaymentAmount';
 import { PaymentStatusBadge } from '@/components/payments/PaymentStatusBadge';
 import { SortField, SortOrder } from '@/utils/payments/sortPayments';
@@ -30,11 +31,7 @@ export const PaymentsTable = ({
   };
 
   if (data.length === 0) {
-    return (
-      <div className="rounded-lg border border-gray-100 bg-white p-12 text-center shadow-sm">
-        <p className="text-gray-500">조회된 거래 내역이 없습니다.</p>
-      </div>
-    );
+    return <EmptyState message="조회된 거래 내역이 없습니다." />;
   }
 
   return (
