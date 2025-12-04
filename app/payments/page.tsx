@@ -92,7 +92,7 @@ export default function PaymentsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-bold text-gray-900">거래 내역</h1>
 
       <div className="flex flex-col gap-4">
