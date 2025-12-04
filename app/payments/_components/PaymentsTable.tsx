@@ -1,5 +1,6 @@
 'use client';
 
+import { SortIcon } from '@/components/common/SortIcon';
 import { PaymentAmount } from '@/components/payments/PaymentAmount';
 import { PaymentStatusBadge } from '@/components/payments/PaymentStatusBadge';
 import { SortField, SortOrder } from '@/utils/payments/sortPayments';
@@ -11,64 +12,6 @@ interface PaymentsTableProps {
   sortOrder: SortOrder;
   onSort: (field: SortField) => void;
 }
-
-const SortIcon = ({
-  field,
-  currentField,
-  order,
-}: {
-  field: SortField;
-  currentField: SortField;
-  order: SortOrder;
-}) => {
-  if (field !== currentField) {
-    return (
-      <svg
-        className="ml-1 h-4 w-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-        />
-      </svg>
-    );
-  }
-
-  return order === 'asc' ? (
-    <svg
-      className="ml-1 h-4 w-4 text-blue-600"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 15l7-7 7 7"
-      />
-    </svg>
-  ) : (
-    <svg
-      className="ml-1 h-4 w-4 text-blue-600"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M19 9l-7 7-7-7"
-      />
-    </svg>
-  );
-};
 
 export const PaymentsTable = ({
   data,
@@ -137,7 +80,7 @@ export const PaymentsTable = ({
                 tabIndex={0}
                 aria-label="거래시간 정렬"
               >
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   거래시간
                   <SortIcon
                     field="paymentAt"
@@ -154,7 +97,7 @@ export const PaymentsTable = ({
                 tabIndex={0}
                 aria-label="가맹점 정렬"
               >
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   가맹점
                   <SortIcon
                     field="mchtName"
@@ -163,7 +106,7 @@ export const PaymentsTable = ({
                   />
                 </div>
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="hidden px-6 py-4 lg:block">
                 거래코드
               </th>
               <th
@@ -174,7 +117,7 @@ export const PaymentsTable = ({
                 tabIndex={0}
                 aria-label="거래금액 정렬"
               >
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   거래금액
                   <SortIcon
                     field="amount"
@@ -199,7 +142,7 @@ export const PaymentsTable = ({
               >
                 <td className="px-6 py-4">{p.paymentAtFormatted}</td>
                 <td className="px-6 py-4">{p.mchtName}</td>
-                <td className="px-6 py-4">
+                <td className="hidden px-6 py-4 lg:block">
                   <span className="text-xs text-gray-500">{p.paymentCode}</span>
                 </td>
                 <td className="px-6 py-4">
