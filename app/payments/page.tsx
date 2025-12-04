@@ -1,11 +1,13 @@
 'use client';
 
+import { Download } from 'lucide-react';
 import { Pagination } from '@/components/Pagination';
 import { usePaymentsData } from '@/hooks/payments/usePaymentsData';
 import { usePaymentsFilters } from '@/hooks/payments/usePaymentsFilters';
 import { usePagination } from '@/hooks/usePagination';
 import { merchantsList, paymentList } from '@/app/mock';
 import { ITEMS_PER_PAGE_OPTIONS } from '@/constants/payments';
+import { exportPaymentsToExcel } from '@/utils/payments/exportToExcel';
 import { SortField } from '@/utils/payments/sortPayments';
 import { PaymentsFilters } from './_components/PaymentsFilters';
 import { PaymentsSearch } from './_components/PaymentsSearch';
@@ -91,9 +93,24 @@ export default function PaymentsPage() {
     handleFilterChange();
   };
 
+  const handleExportToExcel = () => {
+    exportPaymentsToExcel(processedData, '거래내역');
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold text-gray-900">거래 내역</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">거래 내역</h1>
+        <button
+          type="button"
+          onClick={handleExportToExcel}
+          className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+          aria-label="Excel 다운로드"
+        >
+          <Download className="h-4 w-4" />
+          Excel 다운로드
+        </button>
+      </div>
 
       <div className="flex flex-col gap-4">
         {/* 검색 및 필터 */}
