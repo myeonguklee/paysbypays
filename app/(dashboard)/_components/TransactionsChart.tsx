@@ -21,7 +21,7 @@ import {
 } from 'recharts';
 import { useGetPaymentStatusQuery } from '@/api/common/queries';
 import { useGetPaymentsListQuery } from '@/api/payments/queries';
-import { convertToKRW } from '@/utils/currency';
+import { convertToKRW } from '@/utils/payments/currency';
 import { FilterButton } from './FilterButton';
 
 type RangeOption = '1w' | '1m' | '3m';

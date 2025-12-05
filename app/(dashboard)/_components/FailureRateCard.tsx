@@ -6,7 +6,7 @@ import { Payment } from '@/api/payments/type';
 import { ROUTES } from '@/constants/Routes';
 import { StatCard } from './StatCard';
 
-const calculateFailureRate = (paymentList: Payment[]) => {
+function calculateFailureRate(paymentList: Payment[]) {
   const successCount = paymentList.filter(
     (payment) => payment.status === 'SUCCESS'
   ).length;
@@ -31,7 +31,7 @@ const calculateFailureRate = (paymentList: Payment[]) => {
     failedCount,
     totalCount,
   };
-};
+}
 
 export const FailureRateCard = () => {
   const { data: paymentList = [] } = useGetPaymentsListQuery();

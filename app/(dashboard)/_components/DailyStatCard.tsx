@@ -6,16 +6,16 @@ import { useGetPaymentsListQuery } from '@/api/payments/queries';
 import { Payment } from '@/api/payments/type';
 import { PaymentStatus } from '@/api/type';
 import { ROUTES } from '@/constants/Routes';
-import { convertToKRW } from '@/utils/currency';
+import { convertToKRW } from '@/utils/payments/currency';
 import { StatCard } from './StatCard';
 
-type DailyChange = {
+interface DailyChange {
   changeAmount: number;
   changeRate: number;
   isIncrease: boolean;
-};
+}
 
-const calculateDailySummary = (paymentList: Payment[]) => {
+function calculateDailySummary(paymentList: Payment[]) {
   const today = startOfToday();
   const yesterday = subDays(today, 1);
 
@@ -70,7 +70,7 @@ const calculateDailySummary = (paymentList: Payment[]) => {
     dailyCount,
     dailyChange,
   };
-};
+}
 
 export const DailyStatCard = () => {
   const { data: paymentList = [] } = useGetPaymentsListQuery();

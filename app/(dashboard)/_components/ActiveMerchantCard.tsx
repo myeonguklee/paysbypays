@@ -6,15 +6,15 @@ import { Merchant } from '@/api/merchants/type';
 import { ROUTES } from '@/constants/Routes';
 import { StatCard } from './StatCard';
 
-type ActiveMerchantStats = {
+interface ActiveMerchantStats {
   totalMerchants: number;
   activeMerchants: number;
   activeRate: number;
-};
+}
 
-const calculateActiveMerchantStats = (
+function calculateActiveMerchantStats(
   merchantsList: Merchant[]
-): ActiveMerchantStats => {
+): ActiveMerchantStats {
   const totalMerchants = merchantsList.length;
   const activeMerchants = merchantsList.filter(
     (merchant) => merchant.status === 'ACTIVE'
@@ -35,7 +35,7 @@ const calculateActiveMerchantStats = (
     activeMerchants,
     activeRate,
   };
-};
+}
 
 export const ActiveMerchantCard = () => {
   const { data: merchantsList = [] } = useGetMerchantsListQuery();

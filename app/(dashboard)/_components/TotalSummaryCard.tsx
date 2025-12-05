@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useGetPaymentsListQuery } from '@/api/payments/queries';
 import { Payment } from '@/api/payments/type';
 import { ROUTES } from '@/constants/Routes';
-import { convertToKRW } from '@/utils/currency';
+import { convertToKRW } from '@/utils/payments/currency';
 import { StatCard } from './StatCard';
 
-const calculateTotalSummary = (paymentList: Payment[]) => {
+function calculateTotalSummary(paymentList: Payment[]) {
   const successPayments = paymentList.filter(
     (payment) => payment.status === 'SUCCESS'
   );
@@ -24,7 +24,7 @@ const calculateTotalSummary = (paymentList: Payment[]) => {
     totalVolumeAll,
     totalCountAll,
   };
-};
+}
 
 export const TotalSummaryCard = () => {
   const { data: paymentList = [] } = useGetPaymentsListQuery();

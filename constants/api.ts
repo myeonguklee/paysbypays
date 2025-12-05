@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   },
   COMMON: {
     PAYMENT_STATUS: '/api/v1/common/payment-status/all',
+    // TODO: 엔드포인트 오타, 백엔드 수정 후 수정 필요
     PAYMENT_TYPE: '/api/v1/common/paymemt-type/all',
     MERCHANT_STATUS: '/api/v1/common/mcht-status/all',
   },
